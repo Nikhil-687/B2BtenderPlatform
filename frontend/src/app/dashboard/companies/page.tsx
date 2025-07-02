@@ -9,98 +9,100 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, MapPin, Users, Star, Building2, Globe, Mail, Phone } from "lucide-react"
 import Link from "next/link"
-
+import Header from "../header"
+import SideBar from "@/components/app-sidebar"
+export const companies = [
+  {
+    id: 1,
+    name: "TechSolutions Inc.",
+    logo: "/placeholder.svg?height=60&width=60",
+    industry: "Technology",
+    location: "San Francisco, CA",
+    employees: "50-100",
+    rating: 4.8,
+    reviews: 24,
+    description: "Leading software development company specializing in web and mobile applications...",
+    services: ["Web Development", "Mobile Apps", "Cloud Solutions", "AI/ML"],
+    website: "www.techsolutions.com",
+    email: "contact@techsolutions.com",
+    phone: "+1 (555) 123-4567",
+    verified: true,
+    completedProjects: 150,
+  },
+  {
+    id: 2,
+    name: "Creative Design Studio",
+    logo: "/placeholder.svg?height=60&width=60",
+    industry: "Design",
+    location: "New York, NY",
+    employees: "10-25",
+    rating: 4.9,
+    reviews: 18,
+    description: "Award-winning design studio creating beautiful brands and digital experiences...",
+    services: ["Brand Design", "UI/UX", "Print Design", "Marketing Materials"],
+    website: "www.creativedesign.com",
+    email: "hello@creativedesign.com",
+    phone: "+1 (555) 987-6543",
+    verified: true,
+    completedProjects: 89,
+  },
+  {
+    id: 3,
+    name: "BuildRight Construction",
+    logo: "/placeholder.svg?height=60&width=60",
+    industry: "Construction",
+    location: "Chicago, IL",
+    employees: "100-500",
+    rating: 4.6,
+    reviews: 42,
+    description:
+      "Premier construction company with 20+ years of experience in commercial and residential projects...",
+    services: ["Commercial Construction", "Residential", "Renovation", "Project Management"],
+    website: "www.buildright.com",
+    email: "info@buildright.com",
+    phone: "+1 (555) 456-7890",
+    verified: true,
+    completedProjects: 320,
+  },
+  {
+    id: 4,
+    name: "Marketing Pros Agency",
+    logo: "/placeholder.svg?height=60&width=60",
+    industry: "Marketing",
+    location: "Austin, TX",
+    employees: "25-50",
+    rating: 4.7,
+    reviews: 31,
+    description: "Full-service digital marketing agency helping businesses grow their online presence...",
+    services: ["Digital Marketing", "SEO", "Social Media", "Content Creation"],
+    website: "www.marketingpros.com",
+    email: "team@marketingpros.com",
+    phone: "+1 (555) 321-0987",
+    verified: false,
+    completedProjects: 200,
+  },
+  {
+    id: 5,
+    name: "ConsultCorp",
+    logo: "/placeholder.svg?height=60&width=60",
+    industry: "Consulting",
+    location: "Boston, MA",
+    employees: "500+",
+    rating: 4.5,
+    reviews: 67,
+    description: "Strategic consulting firm providing business transformation and technology solutions...",
+    services: ["Strategy Consulting", "Digital Transformation", "Process Optimization", "Change Management"],
+    website: "www.consultcorp.com",
+    email: "contact@consultcorp.com",
+    phone: "+1 (555) 654-3210",
+    verified: true,
+    completedProjects: 450,
+  },
+]
 export default function CompaniesPage() {
   const [searchQuery, setSearchQuery] = useState("")
 
-  const companies = [
-    {
-      id: 1,
-      name: "TechSolutions Inc.",
-      logo: "/placeholder.svg?height=60&width=60",
-      industry: "Technology",
-      location: "San Francisco, CA",
-      employees: "50-100",
-      rating: 4.8,
-      reviews: 24,
-      description: "Leading software development company specializing in web and mobile applications...",
-      services: ["Web Development", "Mobile Apps", "Cloud Solutions", "AI/ML"],
-      website: "www.techsolutions.com",
-      email: "contact@techsolutions.com",
-      phone: "+1 (555) 123-4567",
-      verified: true,
-      completedProjects: 150,
-    },
-    {
-      id: 2,
-      name: "Creative Design Studio",
-      logo: "/placeholder.svg?height=60&width=60",
-      industry: "Design",
-      location: "New York, NY",
-      employees: "10-25",
-      rating: 4.9,
-      reviews: 18,
-      description: "Award-winning design studio creating beautiful brands and digital experiences...",
-      services: ["Brand Design", "UI/UX", "Print Design", "Marketing Materials"],
-      website: "www.creativedesign.com",
-      email: "hello@creativedesign.com",
-      phone: "+1 (555) 987-6543",
-      verified: true,
-      completedProjects: 89,
-    },
-    {
-      id: 3,
-      name: "BuildRight Construction",
-      logo: "/placeholder.svg?height=60&width=60",
-      industry: "Construction",
-      location: "Chicago, IL",
-      employees: "100-500",
-      rating: 4.6,
-      reviews: 42,
-      description:
-        "Premier construction company with 20+ years of experience in commercial and residential projects...",
-      services: ["Commercial Construction", "Residential", "Renovation", "Project Management"],
-      website: "www.buildright.com",
-      email: "info@buildright.com",
-      phone: "+1 (555) 456-7890",
-      verified: true,
-      completedProjects: 320,
-    },
-    {
-      id: 4,
-      name: "Marketing Pros Agency",
-      logo: "/placeholder.svg?height=60&width=60",
-      industry: "Marketing",
-      location: "Austin, TX",
-      employees: "25-50",
-      rating: 4.7,
-      reviews: 31,
-      description: "Full-service digital marketing agency helping businesses grow their online presence...",
-      services: ["Digital Marketing", "SEO", "Social Media", "Content Creation"],
-      website: "www.marketingpros.com",
-      email: "team@marketingpros.com",
-      phone: "+1 (555) 321-0987",
-      verified: false,
-      completedProjects: 200,
-    },
-    {
-      id: 5,
-      name: "ConsultCorp",
-      logo: "/placeholder.svg?height=60&width=60",
-      industry: "Consulting",
-      location: "Boston, MA",
-      employees: "500+",
-      rating: 4.5,
-      reviews: 67,
-      description: "Strategic consulting firm providing business transformation and technology solutions...",
-      services: ["Strategy Consulting", "Digital Transformation", "Process Optimization", "Change Management"],
-      website: "www.consultcorp.com",
-      email: "contact@consultcorp.com",
-      phone: "+1 (555) 654-3210",
-      verified: true,
-      completedProjects: 450,
-    },
-  ]
+  
 
   const industries = ["All", "Technology", "Design", "Construction", "Marketing", "Consulting", "Manufacturing"]
 
@@ -112,6 +114,11 @@ export default function CompaniesPage() {
   )
 
   return (
+    <div className="space-y-6" style={{marginLeft:"400px"}}>
+                  <SideBar></SideBar>
+                  <div>
+                    <Header path={["dashboard", "tenders"]}></Header>
+                  
     <div className="space-y-6">
       {/* Header */}
       <div>
@@ -270,5 +277,6 @@ export default function CompaniesPage() {
         </div>
       </div>
     </div>
+    </div></div>
   )
 }

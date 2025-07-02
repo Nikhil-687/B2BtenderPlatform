@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider"
 import { Search, Filter, MapPin, Calendar, Building2, Clock } from "lucide-react"
 import Link from "next/link"
-
+import SideBar from "@/components/app-sidebar"
+import Header from "../header"
 export default function BrowseTendersPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [budgetRange, setBudgetRange] = useState([0, 100000])
@@ -95,7 +96,13 @@ export default function BrowseTendersPage() {
   )
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" style={{marginLeft:"400px"}}>
+                          <SideBar></SideBar>
+                          <div>
+                            <Header path={["dashboard", "tenders"]}></Header>
+                            
+                       
+                <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Browse Tenders</h1>
@@ -275,5 +282,6 @@ export default function BrowseTendersPage() {
         </div>
       </div>
     </div>
+    </div></div>
   )
 }

@@ -11,11 +11,20 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Upload, X, Plus, Edit, Save, Building2, Globe, Mail, Phone, MapPin, Users } from "lucide-react"
-import Header from "../header"
+import { useParams } from "next/navigation"
+import { companies } from "../page"
+import Header from "../../header"
 import SideBar from "@/components/app-sidebar"
+
 export default function ProfilePage() {
+
+    const grabparam = useParams();
+    const id = grabparam.id as string;
+    const index = id ? parseInt(id) - 1 : -1;
+    const company = companies[index];
+    const isEmployee = false;
   const [isEditing, setIsEditing] = useState(false)
-  const [services, setServices] = useState(["Web Development", "Mobile Apps", "Cloud Solutions"])
+  const [services, setServices] = useState(company.services)
   const [newService, setNewService] = useState("")
 
   const addService = () => {
@@ -35,15 +44,15 @@ export default function ProfilePage() {
                       <div>
                         <Header path={["dashboard", "tenders"]}></Header>
                       
-    <div className="space-y-6"  style={{padding:"3vh 1vw 0 2vw"}}>
+    <div className="space-y-6" style={{padding:"3vh 1vw 0 2vw"}}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Company Profile</h1>
-          <p className="text-gray-600 mt-1">Manage your company information and showcase your capabilities</p>
+          <h1 className="text-3xl font-bold text-gray-900">{company.name}</h1>
+          <p className="text-gray-600 mt-1">{company.description}</p>
         </div>
-        <Button onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? (
+        {isEmployee && <Button onClick={() => {isEmployee && setIsEditing(!isEditing)}}>
+          {isEditing && isEmployee ? (
             <>
               <Save className="h-4 w-4 mr-2" />
               Save Changes
@@ -54,19 +63,18 @@ export default function ProfilePage() {
               Edit Profile
             </>
           )}
-        </Button>
+        </Button>}
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList>
-        <div style={{display:"flex", justifyContent:"space-between", width:"500px", paddingBottom:"3vh", marginTop:"1vh"}}>
+        <TabsList><div style={{display:"flex", justifyContent:"space-between", width:"500px", paddingBottom:"3vh", marginTop:"1vh"}}>
             
-            <TabsTrigger value="overview"><p style={{padding:"5px 10px"}}>Overview</p></TabsTrigger>
-            <TabsTrigger value="services"><p style={{padding:"5px 10px"}}>Services</p></TabsTrigger>
-            <TabsTrigger value="portfolio"><p style={{padding:"5px 10px"}}>Portfolio</p></TabsTrigger>
-            <TabsTrigger value="team"><p style={{padding:"5px 10px"}}>Team</p></TabsTrigger>
-            <TabsTrigger value="certifications"><p style={{padding:"5px 10px"}}>Certifications</p></TabsTrigger>
-      </div>
+              <TabsTrigger value="overview"><p style={{padding:"5px 10px"}}>Overview</p></TabsTrigger>
+              <TabsTrigger value="services"><p style={{padding:"5px 10px"}}>Services</p></TabsTrigger>
+              <TabsTrigger value="portfolio"><p style={{padding:"5px 10px"}}>Portfolio</p></TabsTrigger>
+              <TabsTrigger value="team"><p style={{padding:"5px 10px"}}>Team</p></TabsTrigger>
+              <TabsTrigger value="certifications"><p style={{padding:"5px 10px"}}>Certifications</p></TabsTrigger>
+        </div>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -385,7 +393,6 @@ export default function ProfilePage() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-    </div></div>
+    </div></div></div>
   )
 }
