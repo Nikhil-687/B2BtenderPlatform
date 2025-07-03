@@ -35,19 +35,20 @@ import {
 	MapPin,
 	Users,
 } from "lucide-react";
-import Header from "../header";
+import Header from "../app/dashboard/header";
 import SideBar from "@/components/app-sidebar";
-import { companies } from "../companies/page";
+import { companies } from "../app/dashboard/companies/page";
 import { useParams } from "next/navigation";
-export default function ProfilePage() {
-	
+export default function CompanyProfile() {
+	const grabparam = useParams();
+	const id = grabparam.id as string;
+	const index = id ? parseInt(id) - 1 : -1;
+	const company = companies[index];
+	const isEmployee = true;
 	const [isEditing, setIsEditing] = useState(false);
-	const [services, setServices] = useState([
-		"Web Development",
-		"Mobile Apps",
-		"Cloud Solutions",
-	]);
+	const [services, setServices] = useState(company.services);
 	const [newService, setNewService] = useState("");
+
 
 	const addService = () => {
 		if (newService.trim() && !services.includes(newService.trim())) {
@@ -71,17 +72,25 @@ export default function ProfilePage() {
 					<div className="flex items-center justify-between">
 						<div>
 							<h1 className="text-3xl font-bold text-gray-900">
-								Company Profile
+								{company.name}
 							</h1>
 							<p className="text-gray-600 mt-1">
-								Manage your company information and showcase your capabilities
+								{company.description}
 							</p>
 						</div>
 						<Button onClick={() => setIsEditing(!isEditing)}>
 							{isEditing ? (
 								<>
-									<Save className="h-4 w-4 mr-2" />
-									Save Changes
+									<div>
+									<div>			
+										<Save className="h-4 w-4 mr-2" />
+										Save Changes
+									</div>
+									<div>
+										<Save className="h-4 w-4 mr-2" />
+										add Member
+									</div>
+									</div>
 								</>
 							) : (
 								<>

@@ -1,31 +1,28 @@
-import express from 'express'
-import { configDotenv } from 'dotenv';
-import { createClient } from '@supabase/supabase-js'
+import express from 'express';
+import cors from 'cors';
 import pool from './dbConfig';
-import { testDb } from './controllers/user.controller';
+import dotenv  from 'dotenv';
+import userRoute from "./routes/user"
+import companyRoute from "./routes/company"
+import tenderRoute from "./routes/tender"
+import praposalRoute from "./routes/praposal"
 
-configDotenv();
+dotenv.config();
 
-
-// const supabaseUrl = 'https://nursmqproulosuxmwrkf.supabase.co'
-// const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51cnNtcXByb3Vsb3N1eG13cmtmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzNjIyMjQsImV4cCI6MjA2NjkzODIyNH0.TpX-8H_4QDkjUjQsupTNAgvTgemSlIsaO3AExWQq1sI"
-// const supabase = createClient(supabaseUrl, supabaseKey)
-
-// supabase.from('testdrive').upload('')
-const port = process.env.PORT;
+const app = express();
+const port = process.env.PORT || 5001;
 
 pool.connect();
-console.log(port)
+
+app.use(cors());
+app.use(express.json());
 
 
-let app = express();
+app.use('/api/users', userRoute);
+app.use('/api/company', companyRoute);
+app.use('/api/tenders', tenderRoute);
+app.use('/api/praposals', praposalRoute);
 
-app.get('/test', (req, res) => {
-    res.send(testDb);
-})
-
-
-
-app.listen(port , () => {
-    console.log("Hello World at port ")
-})
+app.listen(port, () => {
+  console.log(`🚀 Server listening on port ${port}`);
+});

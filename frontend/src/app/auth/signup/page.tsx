@@ -131,29 +131,14 @@ export default function SignUpPage() {
 							</div>
 							<div className="form-group">
 								<label htmlFor="company" className="form-label">
-									Company Name
+									Add Logo
 								</label>
 								<input
-									id="company"
-									placeholder="Your Company Ltd."
+									id="Logo"
+									placeholder="your beautiful face pls."
 									className="form-input"
-									required
+									type="file"
 								/>
-							</div>
-							<div className="form-group">
-								<label htmlFor="industry" className="form-label">
-									Industry
-								</label>
-								<select className="form-select" required>
-									<option value="">Select industry</option>
-									<option value="technology">Technology</option>
-									<option value="construction">Construction</option>
-									<option value="healthcare">Healthcare</option>
-									<option value="finance">Finance</option>
-									<option value="manufacturing">Manufacturing</option>
-									<option value="retail">Retail</option>
-									<option value="other">Other</option>
-								</select>
 							</div>
 							<div className="form-group">
 								<label htmlFor="password" className="form-label">

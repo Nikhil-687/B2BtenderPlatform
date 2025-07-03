@@ -4,6 +4,7 @@ import type React from "react";
 import { useState } from "react";
 import { Building2, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+// import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
@@ -14,6 +15,9 @@ export default function SignInPage() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setIsLoading(true);
+
+
+		
 
 		// Simulate API call
 		setTimeout(() => {
