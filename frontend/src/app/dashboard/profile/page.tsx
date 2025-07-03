@@ -37,6 +37,7 @@ import {
 } from "lucide-react";
 import Header from "../header";
 import SideBar from "@/components/app-sidebar";
+import { companies } from "../companies/page";
 export default function ProfilePage() {
 	const [isEditing, setIsEditing] = useState(false);
 	const [services, setServices] = useState([
@@ -59,7 +60,7 @@ export default function ProfilePage() {
 
 	return (
 		<div className="space-y-6" style={{ marginLeft: "400px" }}>
-			<SideBar></SideBar>
+			<SideBar companys={[companies[0], companies[1]]}></SideBar>
 			<div>
 				<Header path={["dashboard", "tenders"]}></Header>
 

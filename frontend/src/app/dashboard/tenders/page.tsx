@@ -33,6 +33,7 @@ import {
 import Link from "next/link";
 import SideBar from "@/components/app-sidebar";
 import Header from "../header";
+import { companies } from "../companies/page";
 
 export default function TendersPage() {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -109,7 +110,7 @@ export default function TendersPage() {
 
 	return (
 		<div className="space-y-6" style={{ marginLeft: "400px" }}>
-			<SideBar></SideBar>
+			<SideBar companys={[companies[0], companies[1]]}></SideBar>
 			<div>
 				<Header path={["dashboard", "tenders"]}></Header>
 				<div

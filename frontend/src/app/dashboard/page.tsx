@@ -1,7 +1,10 @@
+"use client"
+
 import Header from "./header";
 import type React from "react";
 import AppSidebar from "@/components/app-sidebar";
 import Child from "@/app/dashboard/Child";
+import { companies } from "./companies/page";
 
 export default function DashboardLayout() {
 	let user = {
@@ -10,7 +13,7 @@ export default function DashboardLayout() {
 	return (
 		<div style={{ display: "flex", minHeight: "100vh", width: "99vw" }}>
 			<div style={{ flexGrow: "0", width: "20vw" }}>
-				<AppSidebar />
+				<AppSidebar companys={[companies[0], companies[1]]}/>
 			</div>
 			<div
 				className="main-content"

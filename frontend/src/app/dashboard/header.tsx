@@ -23,24 +23,24 @@ export default function Header({ path }: { path: string[] }) {
 				></div>
 				<nav className="breadcrumb">
 					{path.map((val, ind) => (
-						<>
+						<div key={ind}>
 							<div className="hidden">
 								{(path[ind] = val || "dashboard")}
 								{(absolutePath = "")}
 								{path.map((newVal, newInd) => (
-									<>
+									<div key={newInd}>
 										<div style={{ display: "none" }}>
 											{newVal}
 											{newInd <= ind
 												? (absolutePath += path[newInd] + "/")
 												: ""}
 										</div>
-									</>
+									</div>
 								))}
 							</div>
 							<Link href={`/${absolutePath}`}>{path[ind]}</Link>
 							<span className="breadcrumb-separator">/</span>
-						</>
+						</div>
 					))}
 					{path.length == 1 && <span>Overview</span>}
 				</nav>

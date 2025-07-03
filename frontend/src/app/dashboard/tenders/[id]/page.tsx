@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import SideBar from "@/components/app-sidebar";
 import Header from "../../header";
+import { companies } from "../../companies/page";
 const Tenders = [
 	{
 		id: 1,
@@ -144,7 +145,7 @@ export default function Page() {
 	return (
 		<>
 			<div className="space-y-6" style={{ marginLeft: "400px" }}>
-				<SideBar></SideBar>
+				<SideBar companys={[companies[0], companies[1]]}></SideBar>
 				<div>
 					<Header path={["dashboard", "tenders"]}></Header>
 

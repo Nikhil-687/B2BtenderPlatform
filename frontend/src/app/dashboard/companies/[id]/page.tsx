@@ -63,7 +63,7 @@ export default function ProfilePage() {
 
 	return (
 		<div className="space-y-6" style={{ marginLeft: "400px" }}>
-			<SideBar></SideBar>
+			<SideBar companys={[companies[0], companies[1]]}></SideBar>
 			<div>
 				<Header path={["dashboard", "tenders"]}></Header>
 

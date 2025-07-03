@@ -1,4 +1,6 @@
 "use client";
+// import Image from "next/image";
+// import img from "@/../public/globe.svg"
 
 import {
 	Building2,
@@ -50,34 +52,84 @@ const menuItems = [
 	},
 ];
 
-export default function AppSidebar() {
+export default function AppSidebar({companys} : {companys : {id: number,
+	name: string,
+	logo: string,
+	industry: string,
+	location: string,
+	employees: string,
+	rating: number,
+	reviews: number,
+	description: string,
+	services: string[],
+	website: string,
+	email: string,
+	phone: string,
+	verified: boolean,
+	completedProjects: number}[]}) {
+		const companies = companys || [{
+			
+				id: -1,
+				name: "TenderApp",
+				logo: "/placeholder.svg?height=60&width=60",
+				industry: "none",
+				location: "none",
+				employees: "0",
+				rating: 5,
+				reviews: 0,
+				description:
+					"you are not a part of any create one to get satrted ar ask owner of other company to add you",
+				services: [
+				],
+				website: "example.com",
+				email: "contact@consultcorp.com",
+				phone: "+1 (555) 654-3210",
+				verified: false,
+				completedProjects: 0,
+			
+		}];
 	return (
 		<div className="sidebar" style={{ width: "20vw" }}>
 			<div className="sidebar-header">
 				<div
 					style={{
-						display: "flex",
+						display: "contents",
 						alignItems: "center",
 						gap: "0.5rem",
 						marginBottom: "1rem",
 					}}
 				>
-					<Building2
-						style={{ height: "24px", width: "24px", color: "#2563eb" }}
-					/>
-					<span style={{ fontSize: "1.125rem", fontWeight: "bold" }}>
-						TenderHub
-					</span>
+					
+					{
+						companies.map((val, ind) => (
+							<div key={ind}>
+								{/* <
+									style={{ height: "24px", width: "24px", color: "#2563eb" }}
+								/>Building2 */}
+								{/* <Image src={img} alt="image not loading properly"></Image> */}
+								{/* <span style={{ fontSize: "1.125rem", fontWeight: "bold" }}>
+									{ind}{"ji"}
+								</span> */}
+								{val.id != -1 && <Link
+									href={`/dashboard/companies/${val.id}`}
+									className="btn btn-secondary"
+									style={{ width: "100%", fontSize: "0.875rem", marginBottom:"1rem" }}
+								>
+									{val.name}{`->`}
+								</Link>}
+							</div>
+						))
+					}
 				</div>
 				<Link
-					href="/dashboard/tenders/new"
+					href="/dashboard/companies/new"
 					className="btn btn-primary"
 					style={{ width: "100%", fontSize: "0.875rem" }}
 				>
 					<Plus
 						style={{ height: "16px", width: "16px", marginRight: "0.5rem" }}
 					/>
-					Create Tender
+					Create Company
 				</Link>
 			</div>
 
