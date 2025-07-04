@@ -58,6 +58,11 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+export const getUserByEmail = async (email: string) => {
+  const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+  return user || null;
+};
+
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
