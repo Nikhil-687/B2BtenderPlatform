@@ -1,35 +1,62 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import pool from '../dbConfig';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+import { z } from "zod";
+import { generateToken } from "../utils/jwt";
+import { getUserByEmail, createUser } from "../serviece/userserviece";
 
-const SALT_ROUNDS = 10;
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
+const SignupSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  post: z.string().optional(),
+  investment_limit: z.number().optional(),
+  companies: z.array(z.any()).optional()  
+});
 
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+const JWT_SECRET = process.env.JWT_SECRET || "JWTSECREATSHERE";
+
+export const signup = async (req: Request, res: Response): Promise<void> => {
+  const parsed = SignupSchema.safeParse(req.body);
+
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.format() });
+    return;
+  }
+
+  const { name, email, password, post, investment_limit, companies } = parsed.data;
+
   try {
-    const { name, email, password, post, investment_limit, companies } = req.body;
-
-    if (!email || !password) {
-      res.status(400).json({ message: 'Email and password are required.' });
+    // Check if email already exists
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      res.status(409).json({ error: "Email already registered." });
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await pool.query(
-      `INSERT INTO users (name, email, password, post, investment_limit, companies)
-       VALUES ($1, $2, $3, $4, $5, $6)
-       RETURNING id, name, email, post, companies`,
-      [name, email, hashedPassword, post, investment_limit || 0, JSON.stringify(companies || [])]
-    );
+    // Create user in DB
+    const newUser = await createUser({
+      name,
+      email,
+      password: hashedPassword
+    });
 
-    res.status(201).json(result.rows[0]);
+    // Generate JWT token
+    const token = generateToken({
+      userId: newUser.id
+    });
+
+    res.status(201).json({ token });
   } catch (err) {
-    console.error('[createUser]', err);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("[signup]", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 export const getAllUsers = async (_: Request, res: Response): Promise<void> => {
   try {
@@ -58,10 +85,10 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const getUserByEmail = async (email: string) => {
-  const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-  return user || null;
-};
+// export const getUserByEmail = async (email: string) => {
+//   const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+//   return user || null;
+// };
 
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -139,5 +166,70 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   } catch (err) {
     console.error('[loginUser]', err);
     res.status(500).json({ message: 'Login failed' });
+  }
+};
+
+
+export const createCompany = async (req: Request, res: Response): Promise<void> => {
+  const tokenUserId = req.user?.userId;
+  const paramUserId = Number(req.params.id);
+
+  if(tokenUserId == undefined){res.status(403).json({error:"Unothorised user"})}
+  if (tokenUserId !== paramUserId) {
+    res.status(403).json({ error: "Unauthorized action" });
+    return;
+  }
+
+  try {
+    const {
+      name,
+      industry,
+      description,
+      logo_url,
+      members = [],
+      openTenders = [],
+      applicationTenders = [],
+      ongoingTenders = [],
+      raisedPrevTenders = [],
+      workedPrevTenders = []
+    } = req.body;
+
+    
+    const companyResult = await pool.query(
+      `INSERT INTO companies (
+        name, industry, description, logo_url, owner_id, members,
+        "openTenders", "applicationTenders", "ongoingTenders",
+        "raisedPrevTenders", "workedPrevTenders"
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6::jsonb,
+        $7::jsonb, $8::jsonb, $9::jsonb, $10::jsonb, $11::jsonb
+      ) RETURNING id`,
+      [
+        name,
+        industry,
+        description,
+        logo_url,
+        tokenUserId,
+        JSON.stringify(members),
+        JSON.stringify(openTenders),
+        JSON.stringify(applicationTenders),
+        JSON.stringify(ongoingTenders),
+        JSON.stringify(raisedPrevTenders),
+        JSON.stringify(workedPrevTenders)
+      ]
+    );
+
+    const companyId = companyResult.rows[0].id;
+
+    const newToken = generateToken({
+      userId: tokenUserId,
+      companyId,
+      role: "OWNER"
+    });
+
+    res.status(201).json({ message: "Company created", token: newToken });
+  } catch (err) {
+    console.error("[createCompany] Failed:", err);
+    res.status(500).json({ error: "Failed to create company" });
   }
 };
