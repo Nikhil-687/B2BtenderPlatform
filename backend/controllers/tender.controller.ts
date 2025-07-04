@@ -10,7 +10,7 @@ export const createTender = async (req: Request, res: Response): Promise<void> =
       budget,
       deadline,
       contact_email,
-      created_by   // now the only company identifier
+      created_by   
     } = req.body;
 
     const result = await pool.query(

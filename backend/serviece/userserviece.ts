@@ -15,7 +15,7 @@ type User = {
 export const createUser = async ({
   name,
   email,
-  password,
+  password
 }: {
   name: string;
   email: string;
